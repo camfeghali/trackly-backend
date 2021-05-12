@@ -1,11 +1,14 @@
 package main
 
 import (
-	"trackly-backend/app/database"
+	"trackly-backend/app/datastore"
+	"trackly-backend/app/utils"
 )
 
 func main() {
 	var port string = "8080"
-	db := database.NewDBInstance("trackly_user", "insabgho123", "trackly")
+	db := datastore.NewDBInstance("trackly_user", "insabgho123", "trackly")
+	err := db.RunMigrations()
+	utils.CheckError(err)
 	handleRequests(port, db)
 }

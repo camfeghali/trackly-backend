@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"trackly-backend/app/database"
+	"trackly-backend/app/datastore"
 
 	"github.com/gorilla/mux"
 )
 
-func handleRequests(port string, db *database.DB) {
+func handleRequests(port string, db *datastore.DB) {
 	myRouter := mux.NewRouter().StrictSlash(true)
 
 	myRouter.HandleFunc("/", handler).Methods("GET")

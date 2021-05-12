@@ -1,8 +1,8 @@
-package database
+package datastore
 
 import (
 	"fmt"
-	"trackly-backend-old/app/utils"
+	"trackly-backend/app/utils"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -17,4 +17,9 @@ func NewDBInstance(db_name, db_user, db_pw string) *DB {
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	utils.CheckError(err)
 	return &DB{db}
+}
+
+func (db *DB) RunMigrations() error {
+	err := db.AutoMigrate(&User{}, &Client{}, &Project{}, &Task{}, &TimeEntry{})
+	return err
 }
