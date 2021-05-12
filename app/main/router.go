@@ -15,6 +15,7 @@ func handleRequests(port string, db *datastore.DB) {
 	myRouter.HandleFunc("/", handler).Methods("GET")
 	myRouter.HandleFunc("/users", db.GetAllUsers).Methods("GET")
 	myRouter.HandleFunc("/users/{id}", db.GetUser).Methods("GET")
+	myRouter.HandleFunc("/users", db.CreateUser).Methods("POST")
 
 	fmt.Printf("Serving on port: %v\n", port)
 

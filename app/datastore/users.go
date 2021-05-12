@@ -1,6 +1,7 @@
 package datastore
 
 import (
+	"fmt"
 	"net/http"
 	"trackly-backend/app/utils"
 
@@ -29,9 +30,25 @@ func (db *DB) GetUser(w http.ResponseWriter, r *http.Request) {
 func (db *DB) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	var users []User
 	db.Find(&users)
-	if db_resp := db.First(&users); db_resp.Error != nil {
+	if db_resp := db.Find(&users); db_resp.Error != nil {
 		utils.ErrorResponse(w, 200, db_resp.Error.Error())
 		return
 	}
 	utils.JsonResponse(w, 200, users)
+}
+
+func (db *DB) CreateUser(w http.ResponseWriter, r *http.Request) {
+	firstName := r.FormValue("firstName")
+	lastName := r.FormValue("lastName")
+
+	user := User{FirstName: firstName, LastName: lastName}
+
+	if db_resp := db.Create(&user); db_resp.Error != nil {
+		utils.ErrorResponse(w, 200, db_resp.Error.Error())
+		return
+	}
+
+	fmt.Println(user)
+
+	utils.JsonResponse(w, 200, user)
 }
