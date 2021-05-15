@@ -2,6 +2,7 @@ package datastore
 
 import (
 	"net/http"
+	"time"
 	"trackly-backend/app/utils"
 
 	"github.com/gorilla/mux"
@@ -9,11 +10,14 @@ import (
 )
 
 type User struct {
-	ID        uint      `json:"id"`
-	FirstName string    `json:"firstName"`
-	LastName  string    `json:"lastName"`
-	Clients   []*Client `gorm:"foreignKey:UserID"`
-	gorm.Model
+	ID        uint           `json:"id" gorm:"primaryKey"`
+	FirstName string         `json:"firstName"`
+	LastName  string         `json:"lastName"`
+	Password  string         `json:"-"`
+	Clients   []*Client      `json:"clients" gorm:"foreignKey:UserID"`
+	CreatedAt time.Time      `json:"createdAt"`
+	UpdatedAt time.Time      `json:"updatedAt"`
+	DeletedAt gorm.DeletedAt `json:"deletedAt" gorm:"index"`
 }
 
 func (db *DB) GetUser(w http.ResponseWriter, r *http.Request) {

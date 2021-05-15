@@ -7,7 +7,7 @@
             "db_name": "trackly",
             "db_address": "127.0.0.1",
             "db_port": 3306,
-            "authorization_enabled": true
+            "authorization_enabled": false
         }
     }
 }
