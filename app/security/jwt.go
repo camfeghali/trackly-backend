@@ -64,12 +64,12 @@ func (security *Security) IsAuthorized(endpoint func(http.ResponseWriter, *http.
 func Encrypt(password string) (string, error) {
 	argon := argon2.DefaultConfig()
 	encoded, err := argon.HashEncoded([]byte(password))
-	utils.CheckError(err)
+	utils.LogError(err)
 	return string(encoded), err
 }
 
 func PasswordMatches(password, hash string) (bool, error) {
 	ok, err := argon2.VerifyEncoded([]byte(password), []byte(hash))
-	utils.CheckError(err)
+	utils.LogError(err)
 	return ok, err
 }

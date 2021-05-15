@@ -7,7 +7,7 @@ import (
 )
 
 type Task struct {
-	ID          uint           `json:"id" gorm:"primaryKey"`
+	Id          uint           `json:"id" gorm:"primaryKey"`
 	Title       string         `json:"title"`
 	StartDate   time.Time      `json:"startDate"`
 	EndtDate    time.Time      `json:"endDate"`

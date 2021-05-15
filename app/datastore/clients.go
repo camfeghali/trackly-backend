@@ -7,7 +7,7 @@ import (
 )
 
 type Client struct {
-	ID        uint           `json:"id" gorm:"primaryKey"`
+	Id        uint           `json:"id" gorm:"primaryKey"`
 	Name      string         `json:"name"`
 	Email     string         `json:"email"`
 	UserID    uint           `json:"userId"`

@@ -13,6 +13,12 @@ func CheckError(err error) {
 	}
 }
 
+func LogError(err error) {
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+}
+
 func JsonResponse(w http.ResponseWriter, code int, toJson interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(toJson)

@@ -7,7 +7,7 @@ import (
 )
 
 type TimeEntry struct {
-	ID          uint           `json:"id" gorm:"primaryKey"`
+	Id          uint           `json:"id" gorm:"primaryKey"`
 	Title       string         `json:"title"`
 	Description string         `json:"description"`
 	StartDate   time.Time      `json:"startDate"`
