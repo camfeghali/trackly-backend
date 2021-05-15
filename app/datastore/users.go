@@ -1,7 +1,6 @@
 package datastore
 
 import (
-	"fmt"
 	"net/http"
 	"trackly-backend/app/utils"
 
@@ -10,11 +9,11 @@ import (
 )
 
 type User struct {
-	gorm.Model
 	ID        uint      `json:"id"`
 	FirstName string    `json:"firstName"`
 	LastName  string    `json:"lastName"`
 	Clients   []*Client `gorm:"foreignKey:UserID"`
+	gorm.Model
 }
 
 func (db *DB) GetUser(w http.ResponseWriter, r *http.Request) {
@@ -47,8 +46,6 @@ func (db *DB) CreateUser(w http.ResponseWriter, r *http.Request) {
 		utils.ErrorResponse(w, 200, db_resp.Error.Error())
 		return
 	}
-
-	fmt.Println(user)
 
 	utils.JsonResponse(w, 200, user)
 }

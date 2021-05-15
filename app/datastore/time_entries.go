@@ -7,7 +7,6 @@ import (
 )
 
 type TimeEntry struct {
-	gorm.Model
 	ID          uint      `json:"id"`
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
@@ -15,4 +14,5 @@ type TimeEntry struct {
 	EndtDate    time.Time `json:"endDate"`
 	TaskID      uint      `json:"taskId"`
 	Task        Task      `json:"task"`
+	gorm.Model
 }

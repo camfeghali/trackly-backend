@@ -7,10 +7,10 @@ import (
 
 func main() {
 
-	GetConfig()
-	var port string = "8080"
-	db := datastore.NewDBInstance("trackly_user", "insabgho123", "trackly")
+	config := GetConfig("dev")
+
+	db := datastore.NewDBInstance(config.DB_USERNAME, config.DB_PASSWORD, config.DB_ADDRESS, config.DB_NAME, config.DB_PORT)
 	err := db.RunMigrations()
 	utils.CheckError(err)
-	handleRequests(port, db)
+	handleRequests(config.PORT, db)
 }

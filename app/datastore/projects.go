@@ -7,7 +7,6 @@ import (
 )
 
 type Project struct {
-	gorm.Model
 	ID        uint      `json:"id"`
 	Title     string    `json:"title"`
 	StartDate time.Time `json:"startDate"`
@@ -15,4 +14,5 @@ type Project struct {
 	Tasks     []*Task   `gorm:"foreignKey:ProjectID"`
 	ClientID  uint      `json:"clientId"`
 	Client    Client    `json:"client"`
+	gorm.Model
 }

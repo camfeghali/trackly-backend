@@ -1,7 +1,13 @@
 {
-    "port": 8080,
-    "db_username": "trackly_user",
-    "db_password": "insabgho123",
-    "db_name": "trackly",
-    "authorization": false
+    "env": {
+        "dev": {
+            "port": 8080,
+            "db_username": "trackly_user",
+            "db_password": "insabgho123",
+            "db_name": "trackly",
+            "db_address": "127.0.0.1",
+            "db_port": 3306,
+            "authorization_enabled": false
+        }
+    }
 }

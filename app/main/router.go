@@ -10,7 +10,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func handleRequests(port string, db *datastore.DB) {
+func handleRequests(port int, db *datastore.DB) {
 	myRouter := mux.NewRouter().StrictSlash(true)
 
 	myRouter.Handle("/", security.IsAuthorized(handler)).Methods("GET")
