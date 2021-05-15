@@ -6,6 +6,8 @@ import (
 )
 
 func main() {
+
+	GetConfig()
 	var port string = "8080"
 	db := datastore.NewDBInstance("trackly_user", "insabgho123", "trackly")
 	err := db.RunMigrations()

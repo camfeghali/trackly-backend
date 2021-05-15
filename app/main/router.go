@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"trackly-backend/app/datastore"
+	"trackly-backend/app/security"
 
 	"github.com/gorilla/mux"
 )
@@ -12,10 +13,10 @@ import (
 func handleRequests(port string, db *datastore.DB) {
 	myRouter := mux.NewRouter().StrictSlash(true)
 
-	myRouter.HandleFunc("/", handler).Methods("GET")
-	myRouter.HandleFunc("/users", db.GetAllUsers).Methods("GET")
-	myRouter.HandleFunc("/users/{id}", db.GetUser).Methods("GET")
-	myRouter.HandleFunc("/users", db.CreateUser).Methods("POST")
+	myRouter.Handle("/", security.IsAuthorized(handler)).Methods("GET")
+	myRouter.Handle("/users", security.IsAuthorized(db.GetAllUsers)).Methods("GET")
+	myRouter.Handle("/users/{id}", security.IsAuthorized(db.GetUser)).Methods("GET")
+	myRouter.Handle("/users", security.IsAuthorized(db.CreateUser)).Methods("POST")
 
 	fmt.Printf("Serving on port: %v\n", port)
 
