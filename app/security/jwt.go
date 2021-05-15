@@ -7,12 +7,20 @@ import (
 	"trackly-backend/app/utils"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/matthewhartstonge/argon2"
 )
 
 var mySigningKey = []byte("supersecretboogaloo")
 
 type Security struct {
 	AuthorizationEnabled bool
+}
+
+type PasswordConfig struct {
+	Time    uint32
+	Memory  uint32
+	Threads uint8
+	KeyLen  uint32
 }
 
 func GenerateJWT() (string, error) {
@@ -51,4 +59,17 @@ func (security *Security) IsAuthorized(endpoint func(http.ResponseWriter, *http.
 			endpoint(w, r)
 		}
 	})
+}
+
+func Encrypt(password string) (string, error) {
+	argon := argon2.DefaultConfig()
+	encoded, err := argon.HashEncoded([]byte(password))
+	utils.CheckError(err)
+	return string(encoded), err
+}
+
+func PasswordMatches(password, hash string) (bool, error) {
+	ok, err := argon2.VerifyEncoded([]byte(password), []byte(hash))
+	utils.CheckError(err)
+	return ok, err
 }

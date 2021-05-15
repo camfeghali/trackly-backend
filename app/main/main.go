@@ -18,6 +18,7 @@ func main() {
 	} else {
 		fmt.Println("JWT Authorization is disabled")
 	}
+
 	db := datastore.NewDBInstance(config.DB_USERNAME, config.DB_PASSWORD, config.DB_ADDRESS, config.DB_NAME, config.DB_PORT)
 	err := db.RunMigrations()
 	utils.CheckError(err)
