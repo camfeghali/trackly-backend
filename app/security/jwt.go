@@ -1,7 +1,7 @@
 package security
 
 import (
-	"fmt"
+	"errors"
 	"net/http"
 	"time"
 	"trackly-backend/app/utils"
@@ -34,13 +34,9 @@ func (security *Security) IsAuthorized(endpoint func(http.ResponseWriter, *http.
 			if r.Header["Token"] != nil {
 				token, err := parseJwt(r.Header["Token"][0])
 				if err != nil {
-					fmt.Println(err.Error())
 					utils.ErrorResponse(w, 403, err.Error())
-				}
-				if token.Valid {
+				} else if token.Valid {
 					endpoint(w, r)
-				} else {
-					utils.ErrorResponse(w, 403, "Invalid Token")
 				}
 			} else {
 				utils.ErrorResponse(w, 403, "No Authorization token provided")
@@ -54,7 +50,7 @@ func (security *Security) IsAuthorized(endpoint func(http.ResponseWriter, *http.
 func parseJwt(token string) (*jwt.Token, error) {
 	return jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("there was an error")
+			return nil, errors.New("there was an error parsing the token")
 		}
 		return mySigningKey, nil
 	})
