@@ -16,13 +16,6 @@ type Security struct {
 	AuthorizationEnabled bool
 }
 
-type PasswordConfig struct {
-	Time    uint32
-	Memory  uint32
-	Threads uint8
-	KeyLen  uint32
-}
-
 func GenerateJWT() (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
@@ -39,25 +32,31 @@ func (security *Security) IsAuthorized(endpoint func(http.ResponseWriter, *http.
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if security.AuthorizationEnabled {
 			if r.Header["Token"] != nil {
-				token, err := jwt.Parse(r.Header["Token"][0], func(token *jwt.Token) (interface{}, error) {
-					if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-						return nil, fmt.Errorf("there was an error")
-					}
-					return mySigningKey, nil
-				})
+				token, err := parseJwt(r.Header["Token"][0])
 				if err != nil {
 					fmt.Println(err.Error())
 					utils.ErrorResponse(w, 403, err.Error())
 				}
 				if token.Valid {
 					endpoint(w, r)
+				} else {
+					utils.ErrorResponse(w, 403, "Invalid Token")
 				}
 			} else {
-				utils.ErrorResponse(w, 403, "Not Authorized")
+				utils.ErrorResponse(w, 403, "No Authorization token provided")
 			}
 		} else {
 			endpoint(w, r)
 		}
+	})
+}
+
+func parseJwt(token string) (*jwt.Token, error) {
+	return jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("there was an error")
+		}
+		return mySigningKey, nil
 	})
 }
 

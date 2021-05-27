@@ -21,6 +21,7 @@ func LogError(err error) {
 
 func JsonResponse(w http.ResponseWriter, code int, toJson interface{}) {
 	w.Header().Set("Content-Type", "application/json")
+
 	json.NewEncoder(w).Encode(toJson)
 }
 

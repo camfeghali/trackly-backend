@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	config := GetConfig("dev")
+	config := GetConfig("prod")
 	if config.AUTHORIZATION_ENABLED {
 		fmt.Println("JWT Authorization is enabled, you can use this token to make authorized requests:")
 		JWTToken, err := security.GenerateJWT()

@@ -27,9 +27,9 @@ type Configuration struct {
 	AUTHORIZATION_ENABLED bool   `json:"authorization_enabled"`
 }
 
-func LoadConfig() AppConfiguration {
+func loadConfig() AppConfiguration {
 	var configuration AppConfiguration
-	jsonFile, err := os.Open("./app/main/config.json")
+	jsonFile, err := os.Open("/home/camille/go/src/trackly-backend/app/main/config.json")
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	defer jsonFile.Close()
 
@@ -39,7 +39,7 @@ func LoadConfig() AppConfiguration {
 }
 
 func GetConfig(env string) Configuration {
-	appConfig := LoadConfig()
+	appConfig := loadConfig()
 	switch env {
 	case "dev":
 		return appConfig.ENV.DEV

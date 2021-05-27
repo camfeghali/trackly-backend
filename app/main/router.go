@@ -10,7 +10,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var authorizer *security.Security = &security.Security{AuthorizationEnabled: GetConfig("dev").AUTHORIZATION_ENABLED}
+var authorizer *security.Security = &security.Security{AuthorizationEnabled: GetConfig("prod").AUTHORIZATION_ENABLED}
 
 func handleRequests(port int, db *datastore.DB) {
 	myRouter := mux.NewRouter().StrictSlash(true)
@@ -18,7 +18,8 @@ func handleRequests(port int, db *datastore.DB) {
 	myRouter.Handle("/", authorizer.IsAuthorized(handler)).Methods("GET")
 	myRouter.Handle("/users", authorizer.IsAuthorized(db.GetAllUsers)).Methods("GET")
 	myRouter.Handle("/users/{id}", authorizer.IsAuthorized(db.GetUser)).Methods("GET")
-	myRouter.Handle("/users", authorizer.IsAuthorized(db.CreateUser)).Methods("POST")
+	myRouter.HandleFunc("/users", db.CreateUser).Methods("POST")
+	myRouter.HandleFunc("/login", db.Login).Methods("POST")
 
 	fmt.Printf("Serving on port: %v\n", port)
 
